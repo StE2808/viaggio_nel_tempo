@@ -52,6 +52,12 @@
 <!-- Traffic sources will be populated dynamically -->
 </div>
 </div>
+<div class="charts-button-container">
+<button id="show-charts-btn" class="chart-btn">
+<span class="lang-it">📊 Visualizza Grafici</span>
+<span class="lang-en">📊 View Charts</span>
+</button>
+</div>
 </div>
 <div class="narrative-container">
 <h2 class="lang-it">Diario del Viaggiatore</h2>
@@ -66,7 +72,7 @@
 <div class="advice-header">
 <h2 class="lang-it">Consiglio di Claude #<span id="advice-number">1</span></h2>
 <h2 class="lang-en">Claude's Advice #<span id="advice-number-en">1</span></h2>
-<button class="explanation-btn" id="explanation-btn">ℹ️</button>
+<button class="explanation-btn" id="explanation-btn">⚛️</button>
 </div>
 <div class="advice-content" id="current-advice">
 <p class="lang-it">Ciao viaggiatore! Sono Claude, un'intelligenza artificiale. Non preoccuparti, sono qui per aiutarti. Il tuo titolo "Ciao Mondo" è troppo generico e non attira l'attenzione. Cambialo con qualcosa di più specifico e intrigante che menzioni il viaggio nel tempo, ad esempio: "Confessioni di un Viaggiatore Temporale: Dagli Anni '60 al 2025".</p>
@@ -94,6 +100,34 @@
 </div>
 </div>
 
+<!-- Charts Modal -->
+<div class="modal" id="charts-modal">
+<div class="modal-content">
+<span class="close-btn" id="close-charts-btn">&times;</span>
+<h3 class="lang-it">Andamento Metriche</h3>
+<h3 class="lang-en">Metrics Trends</h3>
+<div class="charts-content">
+<div class="chart">
+<h4 class="lang-it">Lettori Giornalieri</h4>
+<h4 class="lang-en">Daily Readers</h4>
+<div class="chart-placeholder">
+<p class="lang-it">Grafico andamento lettori</p>
+<p class="lang-en">Readers trend chart</p>
+</div>
+</div>
+<div class="chart">
+<h4 class="lang-it">Crescita Iscritti</h4>
+<h4 class="lang-en">Subscribers Growth</h4>
+<div class="chart-placeholder">
+<p class="lang-it">Grafico crescita iscritti</p>
+<p class="lang-en">Subscribers growth chart</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script src="texts.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
