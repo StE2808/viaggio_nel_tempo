@@ -54,14 +54,18 @@
 </div>
 <div class="charts-button-container">
 <button id="show-charts-btn" class="chart-btn">
-<span class="lang-it">📊 Visualizza Grafici</span>
-<span class="lang-en">📊 View Charts</span>
+<span class="chart-icon">📈</span>
+<span class="lang-it">Visualizza Grafici</span>
+<span class="lang-en">View Charts</span>
 </button>
 </div>
 </div>
 <div class="narrative-container">
-<h2 class="lang-it">Diario del Viaggiatore</h2>
-<h2 class="lang-en">Traveler's Log</h2>
+<div class="narrative-header">
+  <h2 class="lang-it">Diario del Viaggiatore</h2>
+  <h2 class="lang-en">Traveler's Log</h2>
+  <button class="seo-explanation-btn" id="seo-explanation-btn" title="SEO Info">🔍</button>
+</div>
 <div class="log-entry" id="current-log">
 <p class="lang-it">09 Aprile 2025 - Sono arrivato qui, nel vostro tempo, tre giorni fa. Tutto è così strano e meraviglioso. K. è gentile, mi ha prestato questo "MacBook" e mi sta insegnando a usarlo. Ho deciso di raccontare la mia storia tramite qualcosa chiamato "blog", ma nessuno sembra leggerlo. Ho pubblicato il mio primo articolo dal titolo "Ciao Mondo", ma non ci sono visite. K. suggerisce che dovrei chiedere aiuto a un'intelligenza artificiale chiamata Claude. Non so cosa sia un'intelligenza artificiale, ma a questo punto sono disposto a provare qualsiasi cosa.</p>
 <p class="lang-en">April 9th, 2025 - I arrived here, in your time, three days ago. Everything is so strange and wonderful. K. is kind, she lent me this "MacBook" and is teaching me how to use it. I decided to tell my story through something called a "blog", but nobody seems to be reading it. I published my first article titled "Hello World", but there are no visits. K. suggests I should ask for help from an artificial intelligence called Claude. I don't know what an artificial intelligence is, but at this point I'm willing to try anything.</p>
@@ -70,9 +74,14 @@
 </section>
 <section class="advice-container">
 <div class="advice-header">
-<h2 class="lang-it">Consiglio di Claude #<span id="advice-number">1</span></h2>
-<h2 class="lang-en">Claude's Advice #<span id="advice-number-en">1</span></h2>
-<button class="explanation-btn" id="explanation-btn">⚛️</button>
+  <div class="advice-title-container">
+    <h2 class="lang-it">Consiglio di Claude #</h2>
+    <h2 class="lang-en">Claude's Advice #</h2>
+    <select id="advice-selector" class="advice-dropdown">
+      <!-- Opzioni saranno popolate dinamicamente dal JavaScript -->
+    </select>
+  </div>
+  <button class="explanation-btn" id="explanation-btn">⚛️</button>
 </div>
 <div class="advice-content" id="current-advice">
 <p class="lang-it">Ciao viaggiatore! Sono Claude, un'intelligenza artificiale. Non preoccuparti, sono qui per aiutarti. Il tuo titolo "Ciao Mondo" è troppo generico e non attira l'attenzione. Cambialo con qualcosa di più specifico e intrigante che menzioni il viaggio nel tempo, ad esempio: "Confessioni di un Viaggiatore Temporale: Dagli Anni '60 al 2025".</p>
@@ -123,6 +132,19 @@
 <p class="lang-en">Subscribers growth chart</p>
 </div>
 </div>
+</div>
+</div>
+</div>
+
+<!-- SEO Explanation Modal -->
+<div class="modal" id="seo-explanation-modal">
+<div class="modal-content">
+<span class="close-btn" id="close-seo-modal-btn">&times;</span>
+<h3 class="lang-it">Strategia SEO</h3>
+<h3 class="lang-en">SEO Strategy</h3>
+<div class="seo-explanation-content">
+<p class="lang-it">L'ottimizzazione per i motori di ricerca (SEO) è fondamentale per aumentare la visibilità del tuo blog. Ogni consiglio implementato migliora vari aspetti SEO: titoli ottimizzati con parole chiave, tag pertinenti, interazione nei commenti, contenuti regolari e collegamenti interni. Google analizza tutti questi fattori per determinare il posizionamento del tuo blog nei risultati di ricerca. Il successo di un blog nel 2025 dipende da una strategia SEO efficace che bilanci contenuti di qualità e ottimizzazione tecnica.</p>
+<p class="lang-en">Search Engine Optimization (SEO) is essential for increasing your blog's visibility. Each implemented advice improves various SEO aspects: optimized titles with keywords, relevant tags, comment interaction, regular content, and internal links. Google analyzes all these factors to determine your blog's ranking in search results. A blog's success in 2025 depends on an effective SEO strategy that balances quality content and technical optimization.</p>
 </div>
 </div>
 </div>

@@ -13,6 +13,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const explanationModal = document.getElementById('explanation-modal');
   const applyAdviceBtn = document.getElementById('apply-advice-btn');
   const adviceSelector = document.getElementById('advice-selector');
+  const seoExplanationBtn = document.getElementById('seo-explanation-btn');
+  const closeSeoModalBtn = document.getElementById('close-seo-modal-btn');
+  const seoExplanationModal = document.getElementById('seo-explanation-modal');
+  const showChartsBtn = document.getElementById('show-charts-btn');
+  const closeChartsBtn = document.getElementById('close-charts-btn');
+  const chartsModal = document.getElementById('charts-modal');
 
   // ELEMENTI METRICHE
   const readersToday = document.getElementById('readers-today');
@@ -24,13 +30,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // ELEMENTI NARRATIVI
   const currentLog = document.getElementById('current-log');
   const currentAdvice = document.getElementById('current-advice');
-  const adviceNumber = document.getElementById('advice-number');
-  const adviceNumberEn = document.getElementById('advice-number-en');
 
   // Log di debug per verificare che tutti gli elementi siano trovati
   console.log('Apply Advice Button:', applyAdviceBtn);
   console.log('Current Log:', currentLog);
   console.log('Current Advice:', currentAdvice);
+  console.log('Advice Selector:', adviceSelector);
 
   // STATO DELLA SIMULAZIONE
   let simulationState = {
@@ -61,249 +66,112 @@ document.addEventListener('DOMContentLoaded', function() {
   function initializePage() {
     console.log('Inizializzazione pagina...');
     
-    // Imposta i contenuti iniziali
-    if (simulationState.currentAdviceIndex === 0) {
-      // Se siamo all'inizio, mostra il log iniziale
-      if (currentLog) {
-        currentLog.innerHTML = `
-          <p class="lang-it">${appTexts.initialLog.it}</p>
-          <p class="lang-en">${appTexts.initialLog.en}</p>
-        `;
-      }
-      
-      // Mostra il primo consiglio
-      if (currentAdvice && appTexts.adviceData.length > 0) {
-        currentAdvice.innerHTML = `
-          <p class="lang-it">${appTexts.adviceData[0].adviceIt}</p>
-          <p class="lang-en">${appTexts.adviceData[0].adviceEn}</p>
-        `;
-        
-        // Aggiorna il numero del consiglio
-        if (adviceNumber) adviceNumber.textContent = "1";
-        if (adviceNumberEn) adviceNumberEn.textContent = "1";
-        
-        // Aggiorna la spiegazione
-        const explanationContent = document.querySelector('.explanation-content');
-        if (explanationContent) {
-          explanationContent.innerHTML = `
-            <p class="lang-it">${appTexts.adviceData[0].explanationIt}</p>
-            <p class="lang-en">${appTexts.adviceData[0].explanationEn}</p>
-          `;
-        }
-      }
-    } else {
-      // Se abbiamo già applicato alcuni consigli, ripristina lo stato
-      const previousAdviceIndex = Math.max(0, simulationState.currentAdviceIndex - 1);
-      
-      // Mostra il log dell'ultimo consiglio applicato
-      if (currentLog && previousAdviceIndex < appTexts.adviceData.length) {
-        currentLog.innerHTML = `
-          <p class="lang-it">${appTexts.adviceData[previousAdviceIndex].logIt}</p>
-          <p class="lang-en">${appTexts.adviceData[previousAdviceIndex].logEn}</p>
-        `;
-      }
-      
-      // Mostra il consiglio corrente
-      if (currentAdvice) {
-        if (simulationState.currentAdviceIndex < appTexts.adviceData.length) {
-          currentAdvice.innerHTML = `
-            <p class="lang-it">${appTexts.adviceData[simulationState.currentAdviceIndex].adviceIt}</p>
-            <p class="lang-en">${appTexts.adviceData[simulationState.currentAdviceIndex].adviceEn}</p>
-          `;
-          
-          // Aggiorna il numero del consiglio
-          if (adviceNumber) adviceNumber.textContent = (simulationState.currentAdviceIndex + 1).toString();
-          if (adviceNumberEn) adviceNumberEn.textContent = (simulationState.currentAdviceIndex + 1).toString();
-          
-          // Aggiorna la spiegazione
-          const explanationContent = document.querySelector('.explanation-content');
-          if (explanationContent) {
-            explanationContent.innerHTML = `
-              <p class="lang-it">${appTexts.adviceData[simulationState.currentAdviceIndex].explanationIt}</p>
-              <p class="lang-en">${appTexts.adviceData[simulationState.currentAdviceIndex].explanationEn}</p>
-            `;
-          }
-        } else {
-          // Tutti i consigli sono stati applicati
-          currentAdvice.innerHTML = `
-            <p class="lang-it">Congratulazioni! Hai completato tutti i consigli. Il tuo blog è ora ben avviato.</p>
-            <p class="lang-en">Congratulations! You have completed all the advice. Your blog is now well established.</p>
-          `;
-          
-          if (applyAdviceBtn) {
-            applyAdviceBtn.disabled = true;
-          }
-        }
-      }
-    }
+    // Mostra il consiglio corrente
+    showAdvice(simulationState.currentAdviceIndex);
     
-    // Aggiorna il display delle metriche
-    updateMetricsDisplay();
+    // Aggiorna il log per il consiglio corrente
+    updateLogForAdvice(simulationState.currentAdviceIndex);
     
-    // Seleziona il consiglio corrente nel dropdown
-    if (adviceSelector) {
-      adviceSelector.value = simulationState.currentAdviceIndex + 1;
-    }
+    // Aggiorna le metriche visualizzate
+    updateMetricsForAdvice(simulationState.currentAdviceIndex);
+    
+    // Popola il menu a tendina
+    populateAdviceDropdown();
   }
 
-  // Popola il menu a tendina
-  function populateAdviceDropdown() {
-    if (!adviceSelector) return;
+  // Funzione per mostrare un consiglio specifico
+  function showAdvice(adviceIndex) {
+    if (!currentAdvice) return;
     
-    adviceSelector.innerHTML = '';
-    appTexts.adviceData.forEach(advice => {
-      const optionIt = document.createElement('option');
-      optionIt.value = advice.number;
-      optionIt.textContent = `Consiglio #${advice.number}`;
-      optionIt.className = 'lang-it';
-      
-      const optionEn = document.createElement('option');
-      optionEn.value = advice.number;
-      optionEn.textContent = `Advice #${advice.number}`;
-      optionEn.className = 'lang-en';
-      
-      adviceSelector.appendChild(optionIt);
-      adviceSelector.appendChild(optionEn);
-    });
-  }
-
-  // Language Switcher
-  if (langItBtn) {
-    langItBtn.addEventListener('click', function() {
-      document.body.className = 'lang-mode-it';
-      langItBtn.classList.add('active');
-      if (langEnBtn) langEnBtn.classList.remove('active');
-    });
-  }
-
-  if (langEnBtn) {
-    langEnBtn.addEventListener('click', function() {
-      document.body.className = 'lang-mode-en';
-      langEnBtn.classList.add('active');
-      if (langItBtn) langItBtn.classList.remove('active');
-    });
-  }
-
-  // Modal Functionality
-  if (explanationBtn && explanationModal && closeModalBtn) {
-    explanationBtn.addEventListener('click', function() {
-      explanationModal.style.display = 'flex';
-    });
-    
-    closeModalBtn.addEventListener('click', function() {
-      explanationModal.style.display = 'none';
-    });
-    
-    window.addEventListener('click', function(event) {
-      if (event.target === explanationModal) {
-        explanationModal.style.display = 'none';
-      }
-    });
-  }
-
-  // FUNZIONE PER APPLICARE IL CONSIGLIO
-  function applyAdvice() {
-    console.log('Funzione applyAdvice chiamata!');
-    
-    // Verifica se ci sono ancora consigli da applicare
-    if (simulationState.currentAdviceIndex >= appTexts.adviceData.length) {
-      console.log('Tutti i consigli sono stati applicati!');
-      return;
-    }
-    
-    // Ottieni il consiglio corrente
-    const currentAdviceData = appTexts.adviceData[simulationState.currentAdviceIndex];
-    
-    // Aggiorna il log narrativo
-    if (currentLog && currentAdviceData) {
-      console.log('Aggiornamento log narrativo...');
-      currentLog.innerHTML = `
-        <p class="lang-it">${currentAdviceData.logIt}</p>
-        <p class="lang-en">${currentAdviceData.logEn}</p>
+    if (adviceIndex < appTexts.adviceData.length) {
+      const advice = appTexts.adviceData[adviceIndex];
+      currentAdvice.innerHTML = `
+        <p class="lang-it">${advice.adviceIt}</p>
+        <p class="lang-en">${advice.adviceEn}</p>
       `;
-    }
-    
-    // Aggiorna le metriche in base all'impatto del consiglio
-    if (currentAdviceData.impact) {
-      simulationState.metrics.readersToday = currentAdviceData.impact.readersToday || 0;
-      simulationState.metrics.readersTotal += simulationState.metrics.readersToday;
-      simulationState.metrics.comments = currentAdviceData.impact.comments || 0;
-      simulationState.metrics.subscribers = currentAdviceData.impact.subscribers || 0;
-    }
-    
-    // Aggiorna il display delle metriche
-    updateMetricsDisplay();
-    
-    // Passa al prossimo consiglio
-    simulationState.currentAdviceIndex++;
-    
-    // Aggiorna il numero del consiglio
-    if (adviceNumber) adviceNumber.textContent = (simulationState.currentAdviceIndex + 1).toString();
-    if (adviceNumberEn) adviceNumberEn.textContent = (simulationState.currentAdviceIndex + 1).toString();
-    
-    // Aggiorna il dropdown
-    if (adviceSelector) {
-      adviceSelector.value = simulationState.currentAdviceIndex + 1;
-    }
-    
-    // Mostra il prossimo consiglio o un messaggio di completamento
-    if (simulationState.currentAdviceIndex < appTexts.adviceData.length) {
-      const nextAdvice = appTexts.adviceData[simulationState.currentAdviceIndex];
       
-      // Aggiorna il contenuto del consiglio
-      if (currentAdvice && nextAdvice) {
-        console.log('Passaggio al prossimo consiglio...');
-        currentAdvice.innerHTML = `
-          <p class="lang-it">${nextAdvice.adviceIt}</p>
-          <p class="lang-en">${nextAdvice.adviceEn}</p>
+      // Aggiorna il contenuto della spiegazione
+      const explanationContent = document.querySelector('.explanation-content');
+      if (explanationContent) {
+        explanationContent.innerHTML = `
+          <p class="lang-it">${advice.explanationIt}</p>
+          <p class="lang-en">${advice.explanationEn}</p>
         `;
-        
-        // Aggiorna il contenuto della spiegazione
-        const explanationContent = document.querySelector('.explanation-content');
-        if (explanationContent) {
-          explanationContent.innerHTML = `
-            <p class="lang-it">${nextAdvice.explanationIt}</p>
-            <p class="lang-en">${nextAdvice.explanationEn}</p>
-          `;
-        }
       }
     } else {
       // Tutti i consigli sono stati applicati
-      if (currentAdvice) {
-        console.log('Tutti i consigli completati!');
-        currentAdvice.innerHTML = `
-          <p class="lang-it">Congratulazioni! Hai completato tutti i consigli. Il tuo blog è ora ben avviato.</p>
-          <p class="lang-en">Congratulations! You have completed all the advice. Your blog is now well established.</p>
-        `;
-        
-        // Disabilita il pulsante
-        if (applyAdviceBtn) {
-          applyAdviceBtn.disabled = true;
-        }
+      currentAdvice.innerHTML = `
+        <p class="lang-it">Congratulazioni! Hai completato tutti i consigli. Il tuo blog è ora ben avviato.</p>
+        <p class="lang-en">Congratulations! You have completed all the advice. Your blog is now well established.</p>
+      `;
+      
+      // Disabilita il pulsante
+      if (applyAdviceBtn) {
+        applyAdviceBtn.disabled = true;
+      }
+    }
+  }
+  
+  // Funzione per aggiornare il log in base al consiglio selezionato
+  function updateLogForAdvice(adviceIndex) {
+    if (!currentLog) return;
+    
+    if (adviceIndex === 0) {
+      // Se è il primo consiglio, mostra il log iniziale
+      currentLog.innerHTML = `
+        <p class="lang-it">${appTexts.initialLog.it}</p>
+        <p class="lang-en">${appTexts.initialLog.en}</p>
+      `;
+    } else {
+      // Altrimenti mostra il log del consiglio precedente
+      const previousAdvice = appTexts.adviceData[adviceIndex - 1];
+      currentLog.innerHTML = `
+        <p class="lang-it">${previousAdvice.logIt}</p>
+        <p class="lang-en">${previousAdvice.logEn}</p>
+      `;
+    }
+  }
+  
+  // Funzione per aggiornare le metriche in base al consiglio selezionato
+  function updateMetricsForAdvice(adviceIndex) {
+    // Ripristina le metriche ai valori iniziali
+    let tempMetrics = {
+      readersToday: 0,
+      readersTotal: 0,
+      subscribers: 0,
+      comments: 0,
+      trafficSources: {
+        direct: 1
+      }
+    };
+    
+    // Applica l'impatto di ogni consiglio fino a quello selezionato
+    for (let i = 0; i <= adviceIndex; i++) {
+      if (i < appTexts.adviceData.length && appTexts.adviceData[i].impact) {
+        const impact = appTexts.adviceData[i].impact;
+        tempMetrics.readersToday = impact.readersToday || 0;
+        tempMetrics.readersTotal += tempMetrics.readersToday;
+        tempMetrics.comments = impact.comments || 0;
+        tempMetrics.subscribers = impact.subscribers || 0;
       }
     }
     
-    // Salva lo stato
-    localStorage.setItem('simulationState', JSON.stringify(simulationState));
-  }
-
-  // Aggiorna il display delle metriche
-  function updateMetricsDisplay() {
-    if (readersToday) readersToday.textContent = simulationState.metrics.readersToday;
-    if (readersTotal) readersTotal.textContent = simulationState.metrics.readersTotal;
-    if (subscribers) subscribers.textContent = simulationState.metrics.subscribers;
-    if (comments) comments.textContent = simulationState.metrics.comments;
+    // Aggiorna i display delle metriche con i valori calcolati
+    if (readersToday) readersToday.textContent = tempMetrics.readersToday;
+    if (readersTotal) readersTotal.textContent = tempMetrics.readersTotal;
+    if (subscribers) subscribers.textContent = tempMetrics.subscribers;
+    if (comments) comments.textContent = tempMetrics.comments;
     
-    // Aggiorna le fonti di traffico
-    updateTrafficSources();
+    // Aggiorna le fonti di traffico (semplificato per questa demo)
+    updateTrafficSourcesDisplay(tempMetrics.trafficSources);
   }
-
-  // Aggiorna la visualizzazione delle fonti di traffico
-  function updateTrafficSources() {
+  
+  // Funzione per aggiornare il display delle fonti di traffico
+  function updateTrafficSourcesDisplay(trafficSources) {
     if (!trafficSourcesContainer) return;
     
     trafficSourcesContainer.innerHTML = '';
-    for (const [source, value] of Object.entries(simulationState.metrics.trafficSources)) {
+    for (const [source, value] of Object.entries(trafficSources)) {
       if (value > 0) {
         const sourceElement = document.createElement('div');
         sourceElement.className = 'traffic-source';
@@ -333,7 +201,29 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   }
-
+  
+  // Popola il menu a tendina dei consigli
+  function populateAdviceDropdown() {
+    if (!adviceSelector) return;
+    
+    adviceSelector.innerHTML = '';
+    appTexts.adviceData.forEach((advice, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = (index + 1).toString();
+      
+      // Disabilita le opzioni future che non sono ancora state sbloccate
+      if (index > simulationState.currentAdviceIndex) {
+        option.disabled = true;
+      }
+      
+      adviceSelector.appendChild(option);
+    });
+    
+    // Seleziona il consiglio corrente
+    adviceSelector.value = simulationState.currentAdviceIndex;
+  }
+  
   // Etichette per le fonti di traffico in italiano
   function getSourceLabelIt(source) {
     switch (source) {
@@ -363,58 +253,146 @@ document.addEventListener('DOMContentLoaded', function() {
       default: return source;
     }
   }
-
-  // Gestisce il cambio di consiglio dal dropdown
-  if (adviceSelector) {
-    adviceSelector.addEventListener('change', function() {
-      const selectedAdviceNumber = parseInt(adviceSelector.value);
-      
-      // Impedisce di saltare a consigli futuri
-      if (selectedAdviceNumber - 1 > simulationState.currentAdviceIndex) {
-        adviceSelector.value = simulationState.currentAdviceIndex + 1;
-        alert('Non puoi saltare a consigli futuri che non sono ancora stati applicati.');
-        return;
-      }
-      
-      // Seleziona il consiglio
-      const adviceIndex = selectedAdviceNumber - 1;
-      const advice = appTexts.adviceData[adviceIndex];
-      
-      // Aggiorna il contenuto del consiglio
-      if (currentAdvice && advice) {
+  
+  // FUNZIONE PER APPLICARE IL CONSIGLIO
+  function applyAdvice() {
+    console.log('Funzione applyAdvice chiamata!');
+    
+    // Verifica se ci sono ancora consigli da applicare
+    if (simulationState.currentAdviceIndex >= appTexts.adviceData.length) {
+      console.log('Tutti i consigli sono stati applicati!');
+      return;
+    }
+    
+    // Incrementa l'indice del consiglio corrente
+    simulationState.currentAdviceIndex++;
+    
+    // Mostra il consiglio corrente
+    if (simulationState.currentAdviceIndex < appTexts.adviceData.length) {
+      showAdvice(simulationState.currentAdviceIndex);
+    } else {
+      // Tutti i consigli sono stati applicati
+      if (currentAdvice) {
+        console.log('Tutti i consigli completati!');
         currentAdvice.innerHTML = `
-          <p class="lang-it">${advice.adviceIt}</p>
-          <p class="lang-en">${advice.adviceEn}</p>
+          <p class="lang-it">Congratulazioni! Hai completato tutti i consigli. Il tuo blog è ora ben avviato.</p>
+          <p class="lang-en">Congratulations! You have completed all the advice. Your blog is now well established.</p>
         `;
         
-        // Aggiorna il numero del consiglio
-        if (adviceNumber) adviceNumber.textContent = selectedAdviceNumber.toString();
-        if (adviceNumberEn) adviceNumberEn.textContent = selectedAdviceNumber.toString();
-        
-        // Aggiorna il contenuto della spiegazione
-        const explanationContent = document.querySelector('.explanation-content');
-        if (explanationContent) {
-          explanationContent.innerHTML = `
-            <p class="lang-it">${advice.explanationIt}</p>
-            <p class="lang-en">${advice.explanationEn}</p>
-          `;
+        // Disabilita il pulsante
+        if (applyAdviceBtn) {
+          applyAdviceBtn.disabled = true;
         }
       }
+    }
+    
+    // Aggiorna il log per il nuovo stato
+    updateLogForAdvice(simulationState.currentAdviceIndex);
+    
+    // Aggiorna le metriche
+    updateMetricsForAdvice(simulationState.currentAdviceIndex);
+    
+    // Aggiorna il dropdown
+    populateAdviceDropdown();
+    
+    // Salva lo stato
+    localStorage.setItem('simulationState', JSON.stringify(simulationState));
+  }
+  
+  // EVENT LISTENERS
+  
+  // Language Switcher
+  if (langItBtn) {
+    langItBtn.addEventListener('click', function() {
+      document.body.className = 'lang-mode-it';
+      langItBtn.classList.add('active');
+      if (langEnBtn) langEnBtn.classList.remove('active');
     });
   }
 
-  // **** CORREZIONE: Aggiungi l'event listener al pulsante "applica consiglio" ****
+  if (langEnBtn) {
+    langEnBtn.addEventListener('click', function() {
+      document.body.className = 'lang-mode-en';
+      langEnBtn.classList.add('active');
+      if (langItBtn) langItBtn.classList.remove('active');
+    });
+  }
+
+  // Technical Explanation Modal
+  if (explanationBtn && explanationModal && closeModalBtn) {
+    explanationBtn.addEventListener('click', function() {
+      explanationModal.style.display = 'flex';
+    });
+    
+    closeModalBtn.addEventListener('click', function() {
+      explanationModal.style.display = 'none';
+    });
+    
+    window.addEventListener('click', function(event) {
+      if (event.target === explanationModal) {
+        explanationModal.style.display = 'none';
+      }
+    });
+  }
+  
+  // SEO Explanation Modal
+  if (seoExplanationBtn && seoExplanationModal && closeSeoModalBtn) {
+    seoExplanationBtn.addEventListener('click', function() {
+      seoExplanationModal.style.display = 'flex';
+    });
+    
+    closeSeoModalBtn.addEventListener('click', function() {
+      seoExplanationModal.style.display = 'none';
+    });
+    
+    window.addEventListener('click', function(event) {
+      if (event.target === seoExplanationModal) {
+        seoExplanationModal.style.display = 'none';
+      }
+    });
+  }
+  
+  // Charts Modal
+  if (showChartsBtn && chartsModal && closeChartsBtn) {
+    showChartsBtn.addEventListener('click', function() {
+      chartsModal.style.display = 'flex';
+    });
+    
+    closeChartsBtn.addEventListener('click', function() {
+      chartsModal.style.display = 'none';
+    });
+    
+    window.addEventListener('click', function(event) {
+      if (event.target === chartsModal) {
+        chartsModal.style.display = 'none';
+      }
+    });
+  }
+  
+  // Gestione del menu a tendina per i consigli
+  if (adviceSelector) {
+    adviceSelector.addEventListener('change', function() {
+      const selectedAdviceIndex = parseInt(adviceSelector.value);
+      
+      // Aggiorna il consiglio corrente in base alla selezione
+      showAdvice(selectedAdviceIndex);
+      
+      // Aggiorna il log corrispondente
+      updateLogForAdvice(selectedAdviceIndex);
+      
+      // Aggiorna le metriche visualizzate
+      updateMetricsForAdvice(selectedAdviceIndex);
+    });
+  }
+  
+  // Apply Advice Button
   if (applyAdviceBtn) {
     console.log('Aggiungo event listener al pulsante "applica consiglio"');
     applyAdviceBtn.addEventListener('click', applyAdvice);
   } else {
     console.error('ERRORE: Il pulsante "apply-advice-btn" non è stato trovato!');
   }
-
-  // Inizializza l'applicazione
-  initializePage();
-  populateAdviceDropdown();
-
+  
   // Pulsante per resettare tutto lo stato (per debug)
   const resetButton = document.createElement('button');
   resetButton.textContent = 'Reset Simulation';
@@ -453,6 +431,9 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.removeItem('simulationState');
     location.reload();
   });
-
+  
+  // Inizializza l'applicazione
+  initializePage();
+  
   console.log('Inizializzazione completata con successo!');
 });
