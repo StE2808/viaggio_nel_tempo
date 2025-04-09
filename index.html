@@ -1,0 +1,99 @@
+<!-- File: Viaggiatore nel temp claude/index.html -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulatore di Diffusione Temporale</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Source+Serif+Pro:wght@400;600&family=Courier+Prime&display=swap" rel="stylesheet">
+</head>
+<body class="lang-mode-it">
+<div class="container">
+<header>
+<div class="title-container">
+<h1 class="lang-it">Simulatore di Diffusione Temporale</h1>
+<h1 class="lang-en">Temporal Diffusion Simulator</h1>
+</div>
+<div class="language-switcher">
+<button id="lang-it-btn" class="active">IT</button>
+<button id="lang-en-btn">EN</button>
+</div>
+</header>
+<main>
+<section class="dashboard">
+<div class="metrics-container">
+<h2 class="lang-it">Metriche del Blog</h2>
+<h2 class="lang-en">Blog Metrics</h2>
+<div class="metric">
+<span class="metric-label lang-it">Lettori Oggi:</span>
+<span class="metric-label lang-en">Today's Readers:</span>
+<span class="metric-value" id="readers-today">0</span>
+</div>
+<div class="metric">
+<span class="metric-label lang-it">Lettori Totali:</span>
+<span class="metric-label lang-en">Total Readers:</span>
+<span class="metric-value" id="readers-total">0</span>
+</div>
+<div class="metric">
+<span class="metric-label lang-it">Iscritti:</span>
+<span class="metric-label lang-en">Subscribers:</span>
+<span class="metric-value" id="subscribers">0</span>
+</div>
+<div class="metric">
+<span class="metric-label lang-it">Commenti:</span>
+<span class="metric-label lang-en">Comments:</span>
+<span class="metric-value" id="comments">0</span>
+</div>
+<div class="traffic-sources">
+<h3 class="lang-it">Fonti di Traffico</h3>
+<h3 class="lang-en">Traffic Sources</h3>
+<div class="source-container" id="traffic-sources-container">
+<!-- Traffic sources will be populated dynamically -->
+</div>
+</div>
+</div>
+<div class="narrative-container">
+<h2 class="lang-it">Diario del Viaggiatore</h2>
+<h2 class="lang-en">Traveler's Log</h2>
+<div class="log-entry" id="current-log">
+<p class="lang-it">09 Aprile 2025 - Sono arrivato qui, nel vostro tempo, tre giorni fa. Tutto è così strano e meraviglioso. K. è gentile, mi ha prestato questo "MacBook" e mi sta insegnando a usarlo. Ho deciso di raccontare la mia storia tramite qualcosa chiamato "blog", ma nessuno sembra leggerlo. Ho pubblicato il mio primo articolo dal titolo "Ciao Mondo", ma non ci sono visite. K. suggerisce che dovrei chiedere aiuto a un'intelligenza artificiale chiamata Claude. Non so cosa sia un'intelligenza artificiale, ma a questo punto sono disposto a provare qualsiasi cosa.</p>
+<p class="lang-en">April 9th, 2025 - I arrived here, in your time, three days ago. Everything is so strange and wonderful. K. is kind, she lent me this "MacBook" and is teaching me how to use it. I decided to tell my story through something called a "blog", but nobody seems to be reading it. I published my first article titled "Hello World", but there are no visits. K. suggests I should ask for help from an artificial intelligence called Claude. I don't know what an artificial intelligence is, but at this point I'm willing to try anything.</p>
+</div>
+</div>
+</section>
+<section class="advice-container">
+<div class="advice-header">
+<h2 class="lang-it">Consiglio di Claude #<span id="advice-number">1</span></h2>
+<h2 class="lang-en">Claude's Advice #<span id="advice-number-en">1</span></h2>
+<button class="explanation-btn" id="explanation-btn">ℹ️</button>
+</div>
+<div class="advice-content" id="current-advice">
+<p class="lang-it">Ciao viaggiatore! Sono Claude, un'intelligenza artificiale. Non preoccuparti, sono qui per aiutarti. Il tuo titolo "Ciao Mondo" è troppo generico e non attira l'attenzione. Cambialo con qualcosa di più specifico e intrigante che menzioni il viaggio nel tempo, ad esempio: "Confessioni di un Viaggiatore Temporale: Dagli Anni '60 al 2025".</p>
+<p class="lang-en">Hello traveler! I'm Claude, an artificial intelligence. Don't worry, I'm here to help. Your title "Hello World" is too generic and doesn't grab attention. Change it to something more specific and intriguing that mentions time travel, for example: "Confessions of a Time Traveler: From the 1960s to 2025".</p>
+</div>
+
+<button class="action-btn" id="apply-advice-btn">
+<span class="lang-it">Applica Consiglio</span>
+<span class="lang-en">Apply Advice</span>
+</button>
+</section>
+</main>
+</div>
+
+<!-- Technical Explanation Modal -->
+<div class="modal" id="explanation-modal">
+<div class="modal-content">
+<span class="close-btn" id="close-modal-btn">&times;</span>
+<h3 class="lang-it">Spiegazione Tecnica</h3>
+<h3 class="lang-en">Technical Explanation</h3>
+<div class="explanation-content">
+<p class="lang-it">Il titolo è l'elemento più importante per attirare l'attenzione e per il posizionamento nei motori di ricerca. Un titolo generico come "Ciao Mondo" non contiene parole chiave rilevanti e non comunica il valore o il contenuto dell'articolo. I titoli efficaci sono specifici, contengono keywords rilevanti (come "viaggio nel tempo"), creano curiosità e promettono un valore al lettore. Statisticamente, i titoli con 6-13 parole tendono a ottenere più click e condivisioni.</p>
+<p class="lang-en">The title is the most important element for grabbing attention and for search engine positioning. A generic title like "Hello World" contains no relevant keywords and doesn't communicate the value or content of the article. Effective titles are specific, contain relevant keywords (like "time travel"), create curiosity, and promise value to the reader. Statistically, titles with 6-13 words tend to get more clicks and shares.</p>
+</div>
+</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
