@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const explanationModal = document.getElementById('explanation-modal');
   const applyAdviceBtn = document.getElementById('apply-advice-btn');
   const adviceSelector = document.getElementById('advice-selector');
-  const seoExplanationBtn = document.getElementById('seo-explanation-btn');
-  const closeSeoModalBtn = document.getElementById('close-seo-modal-btn');
-  const seoExplanationModal = document.getElementById('seo-explanation-modal');
   const showChartsBtn = document.getElementById('show-charts-btn');
   const closeChartsBtn = document.getElementById('close-charts-btn');
   const chartsModal = document.getElementById('charts-modal');
@@ -235,6 +232,8 @@ document.addEventListener('DOMContentLoaded', function() {
       case 'instagram': return 'Social: Instagram';
       case 'referral': return 'Siti Referral';
       case 'email': return 'Email/Iscritti';
+      case 'podcast': return 'Podcast';
+      case 'social': return 'Social Media';
       default: return source;
     }
   }
@@ -250,8 +249,97 @@ document.addEventListener('DOMContentLoaded', function() {
       case 'instagram': return 'Social: Instagram';
       case 'referral': return 'Referral Sites';
       case 'email': return 'Email/Subscribers';
+      case 'podcast': return 'Podcast';
+      case 'social': return 'Social Media';
       default: return source;
     }
+  }
+  
+  // Funzione per creare i grafici
+  function createCharts() {
+    // Ottieni dati per i grafici
+    const adviceLabels = Array.from({length: simulationState.currentAdviceIndex + 1}, (_, i) => i + 1);
+    
+    // Raccolta dei dati per i lettori
+    const readersData = [];
+    const subscribersData = [];
+    
+    for (let i = 0; i <= simulationState.currentAdviceIndex; i++) {
+      if (i < appTexts.adviceData.length && appTexts.adviceData[i].impact) {
+        readersData.push(appTexts.adviceData[i].impact.readersToday || 0);
+        subscribersData.push(appTexts.adviceData[i].impact.subscribers || 0);
+      }
+    }
+    
+    // Crea il grafico dei lettori
+    const readersCtx = document.getElementById('readers-chart').getContext('2d');
+    const readersChart = new Chart(readersCtx, {
+      type: 'line',
+      data: {
+        labels: adviceLabels,
+        datasets: [{
+          label: document.body.className === 'lang-mode-it' ? 'Lettori Giornalieri' : 'Daily Readers',
+          data: readersData,
+          borderColor: 'rgb(0, 128, 128)',
+          backgroundColor: 'rgba(0, 128, 128, 0.2)',
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: document.body.className === 'lang-mode-it' ? 'Numero di Lettori' : 'Number of Readers'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: document.body.className === 'lang-mode-it' ? 'Consiglio #' : 'Advice #'
+            }
+          }
+        }
+      }
+    });
+    
+    // Crea il grafico degli iscritti
+    const subscribersCtx = document.getElementById('subscribers-chart').getContext('2d');
+    const subscribersChart = new Chart(subscribersCtx, {
+      type: 'line',
+      data: {
+        labels: adviceLabels,
+        datasets: [{
+          label: document.body.className === 'lang-mode-it' ? 'Iscritti' : 'Subscribers',
+          data: subscribersData,
+          borderColor: 'rgb(255, 219, 88)',
+          backgroundColor: 'rgba(255, 219, 88, 0.2)',
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: document.body.className === 'lang-mode-it' ? 'Numero di Iscritti' : 'Number of Subscribers'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: document.body.className === 'lang-mode-it' ? 'Consiglio #' : 'Advice #'
+            }
+          }
+        }
+      }
+    });
   }
   
   // FUNZIONE PER APPLICARE IL CONSIGLIO
@@ -335,27 +423,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // SEO Explanation Modal
-  if (seoExplanationBtn && seoExplanationModal && closeSeoModalBtn) {
-    seoExplanationBtn.addEventListener('click', function() {
-      seoExplanationModal.style.display = 'flex';
-    });
-    
-    closeSeoModalBtn.addEventListener('click', function() {
-      seoExplanationModal.style.display = 'none';
-    });
-    
-    window.addEventListener('click', function(event) {
-      if (event.target === seoExplanationModal) {
-        seoExplanationModal.style.display = 'none';
-      }
-    });
-  }
-  
   // Charts Modal
   if (showChartsBtn && chartsModal && closeChartsBtn) {
     showChartsBtn.addEventListener('click', function() {
       chartsModal.style.display = 'flex';
+      // Creiamo i grafici all'apertura del modal
+      createCharts();
     });
     
     closeChartsBtn.addEventListener('click', function() {

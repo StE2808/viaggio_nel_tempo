@@ -7,6 +7,7 @@
 <title>Simulatore di Diffusione Temporale</title>
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Source+Serif+Pro:wght@400;600&family=Courier+Prime&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="lang-mode-it">
 <div class="container">
@@ -64,7 +65,6 @@
 <div class="narrative-header">
   <h2 class="lang-it">Diario del Viaggiatore</h2>
   <h2 class="lang-en">Traveler's Log</h2>
-  <button class="seo-explanation-btn" id="seo-explanation-btn" title="SEO Info">🔍</button>
 </div>
 <div class="log-entry" id="current-log">
 <p class="lang-it">09 Aprile 2025 - Sono arrivato qui, nel vostro tempo, tre giorni fa. Tutto è così strano e meraviglioso. K. è gentile, mi ha prestato questo "MacBook" e mi sta insegnando a usarlo. Ho deciso di raccontare la mia storia tramite qualcosa chiamato "blog", ma nessuno sembra leggerlo. Ho pubblicato il mio primo articolo dal titolo "Ciao Mondo", ma non ci sono visite. K. suggerisce che dovrei chiedere aiuto a un'intelligenza artificiale chiamata Claude. Non so cosa sia un'intelligenza artificiale, ma a questo punto sono disposto a provare qualsiasi cosa.</p>
@@ -119,32 +119,13 @@
 <div class="chart">
 <h4 class="lang-it">Lettori Giornalieri</h4>
 <h4 class="lang-en">Daily Readers</h4>
-<div class="chart-placeholder">
-<p class="lang-it">Grafico andamento lettori</p>
-<p class="lang-en">Readers trend chart</p>
-</div>
+<canvas id="readers-chart" width="400" height="200"></canvas>
 </div>
 <div class="chart">
 <h4 class="lang-it">Crescita Iscritti</h4>
 <h4 class="lang-en">Subscribers Growth</h4>
-<div class="chart-placeholder">
-<p class="lang-it">Grafico crescita iscritti</p>
-<p class="lang-en">Subscribers growth chart</p>
+<canvas id="subscribers-chart" width="400" height="200"></canvas>
 </div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- SEO Explanation Modal -->
-<div class="modal" id="seo-explanation-modal">
-<div class="modal-content">
-<span class="close-btn" id="close-seo-modal-btn">&times;</span>
-<h3 class="lang-it">Strategia SEO</h3>
-<h3 class="lang-en">SEO Strategy</h3>
-<div class="seo-explanation-content">
-<p class="lang-it">L'ottimizzazione per i motori di ricerca (SEO) è fondamentale per aumentare la visibilità del tuo blog. Ogni consiglio implementato migliora vari aspetti SEO: titoli ottimizzati con parole chiave, tag pertinenti, interazione nei commenti, contenuti regolari e collegamenti interni. Google analizza tutti questi fattori per determinare il posizionamento del tuo blog nei risultati di ricerca. Il successo di un blog nel 2025 dipende da una strategia SEO efficace che bilanci contenuti di qualità e ottimizzazione tecnica.</p>
-<p class="lang-en">Search Engine Optimization (SEO) is essential for increasing your blog's visibility. Each implemented advice improves various SEO aspects: optimized titles with keywords, relevant tags, comment interaction, regular content, and internal links. Google analyzes all these factors to determine your blog's ranking in search results. A blog's success in 2025 depends on an effective SEO strategy that balances quality content and technical optimization.</p>
 </div>
 </div>
 </div>
